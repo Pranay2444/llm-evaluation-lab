@@ -25,7 +25,10 @@ def test_chatbot_answer_quality(case) -> None:
     )
     correctness = GEval(
         name="Correctness",
-        criteria="Determine whether the actual output preserves the meaning of the expected output.",
+        criteria=(
+            "Determine whether the actual output preserves the meaning "
+            "of the expected output."
+        ),
         evaluation_params=[SingleTurnParams.ACTUAL_OUTPUT, SingleTurnParams.EXPECTED_OUTPUT],
         threshold=0.7,
     )
