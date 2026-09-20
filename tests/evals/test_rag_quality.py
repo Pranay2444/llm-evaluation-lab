@@ -13,7 +13,6 @@ from deepeval.test_case import LLMTestCase
 
 from llm_evaluation_lab import load_cases
 
-
 pytestmark = pytest.mark.live_eval
 DATASET = Path(__file__).parents[2] / "datasets" / "rag.json"
 

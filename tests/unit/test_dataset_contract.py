@@ -4,7 +4,6 @@ import pytest
 
 from llm_evaluation_lab import load_cases
 
-
 DATASETS = Path(__file__).parents[2] / "datasets"
 
 
