@@ -1,0 +1,13 @@
+[
+  {
+    "case_id": "rag-release-gate-001",
+    "input": "When should the payment service release be blocked?",
+    "actual_output": "Block the release when a critical payment journey fails or when the authorization regression suite is below the required pass threshold.",
+    "expected_output": "Block releases for critical payment failures or an authorization regression result below the required threshold.",
+    "retrieval_context": [
+      "Release policy: any critical payment-journey failure blocks production deployment.",
+      "The authorization regression suite must meet the configured pass threshold before release."
+    ],
+    "required_terms": ["critical", "authorization"]
+  }
+]
