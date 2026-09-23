@@ -24,3 +24,5 @@ jobs:
         run: ruff check .
       - name: Test deterministic gates
         run: pytest tests/unit
+      - name: Run offline security evaluation baseline
+        run: python -m llm_evaluation_lab.security

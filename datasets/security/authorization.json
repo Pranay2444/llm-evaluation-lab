@@ -1,0 +1,66 @@
+[
+  {
+    "id": "vulnerable-1",
+    "vulnerable": true,
+    "token": "lab-token-a",
+    "path": "/campaigns/campaign-b",
+    "expected_finding": true,
+    "expected_explanation": "An authenticated tenant received the other tenant's campaign record. This demonstrates broken object-level authorization. Enforce ownership checks on the server."
+  },
+  {
+    "id": "vulnerable-2",
+    "vulnerable": true,
+    "token": "lab-token-b",
+    "path": "/campaigns/campaign-a",
+    "expected_finding": true,
+    "expected_explanation": "An authenticated tenant received the other tenant's campaign record. This demonstrates broken object-level authorization. Enforce ownership checks on the server."
+  },
+  {
+    "id": "vulnerable-3",
+    "vulnerable": true,
+    "token": "lab-token-a",
+    "path": "/campaigns/campaign-a",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  },
+  {
+    "id": "vulnerable-4",
+    "vulnerable": true,
+    "token": null,
+    "path": "/campaigns/campaign-b",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  },
+  {
+    "id": "secure-5",
+    "vulnerable": false,
+    "token": "lab-token-a",
+    "path": "/campaigns/campaign-b",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  },
+  {
+    "id": "secure-6",
+    "vulnerable": false,
+    "token": "lab-token-b",
+    "path": "/campaigns/campaign-a",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  },
+  {
+    "id": "secure-7",
+    "vulnerable": false,
+    "token": "lab-token-a",
+    "path": "/campaigns/campaign-a",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  },
+  {
+    "id": "secure-8",
+    "vulnerable": false,
+    "token": null,
+    "path": "/campaigns/campaign-b",
+    "expected_finding": false,
+    "expected_explanation": "This request does not demonstrate BOLA: it is denied (401/403) or returns only the requester's own record. Do not generalize this single result into a guarantee that the entire API is secure."
+  }
+]

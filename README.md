@@ -11,6 +11,55 @@ The repository separates cheap deterministic checks from model-judged evaluation
 | Chatbot | schema, required terms, refusal contract | answer relevancy, correctness, tone, safety |
 | RAG | citations, context presence, empty retrieval | faithfulness, contextual precision/recall/relevancy |
 | Agent | tool allow-list, arguments, duplicates, permission boundaries | task completion, tool/argument correctness |
+| Security-testing agent | BOLA detection, false positives, exact tool calls, evidence references | explanation correctness against actual API evidence |
+
+## Security evaluation module
+
+Evaluate whether an agent can identify **broken object-level authorization (BOLA)**
+in a synthetic campaign API. The vulnerable variant authenticates the caller but
+omits the tenant ownership check; the secure variant returns `403` for cross-tenant reads.
+Own-tenant reads and unauthenticated requests are included as negative controls.
+
+```text
+Eight labelled scenarios → agent → in-process API tool → captured trace
+                                    ↓
+                 deterministic scores + optional DeepEval explanation judge
+```
+
+After the quick-start installation below, run from the repository root:
+
+```bash
+python -m llm_evaluation_lab.security
+pytest tests/unit/test_security_lab.py
+```
+
+The default agent is a **scripted smoke-test baseline, not an LLM**. It makes no
+network or model calls. Its expected result is 2 true positives, 6 true negatives,
+zero false positives and exact tool-call correctness of 1.0. These results validate
+the harness; they do not establish any model's security capabilities.
+
+The JSON report at `reports/security/results.json` includes:
+
+- Detection recall and finding precision, plus TP/FP/TN/FN counts.
+- False-positive rate across known-safe cases and invalid-output count.
+- Tool-call correctness, checking method, path, identity and call count.
+- Evidence-reference validity and per-case observed responses.
+- Explanation correctness, initially `null` until an optional judge runs.
+
+Run your own agent adapter with `--agent my_agent:run`. The agent receives a task
+and restricted request callback; the evaluator retains labels and records tool calls.
+See [the complete module guide](docs/SECURITY_EVALUATION.md) for the adapter contract,
+scoring formulas, judge command, example, limitations and practice exercises.
+
+To judge the saved explanations using DeepEval G-Eval (requires an API key and may
+incur charges), set `OPENAI_API_KEY` in `.env.local` and choose a supported judge model:
+
+```bash
+python -m llm_evaluation_lab.security.judge --model YOUR_JUDGE_MODEL
+```
+
+The separate judged report is `reports/security/judged.json`. Default CI runs the
+offline tests and baseline; it never invokes the explanation judge.
 
 ## Repository map
 
@@ -64,5 +113,6 @@ See [`docs/ADDING_A_PROJECT.md`](docs/ADDING_A_PROJECT.md) for the full checklis
 - `chatbot.json`: grounded answer and uncertainty examples
 - `rag.json`: answer plus retrieved evidence
 - `agent.json`: expected tools, arguments, and permission decisions
+- `security/authorization.json`: eight labelled synthetic authorization scenarios
 
 Replace the samples with cases from your own projects; do not treat them as a production benchmark.
